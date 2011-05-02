@@ -5,7 +5,7 @@ namespace Manina.Math.Mesh
 	/// <summary>
 	/// Contains utility methods.
 	/// </summary>
-	public static class Utility
+	internal static class Utility
 	{
 		/// <summary>
 		/// Determines if the given floating point numbers can be considered equal.
