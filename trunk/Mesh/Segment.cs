@@ -1,14 +1,14 @@
 using System;
 
-namespace Manina.Math.Mesh
+namespace Manina.Math
 {
     /// <summary>
     /// Represents a line segment.
     /// </summary>
-    public class Segment : IShape
+    internal class Segment
     {
         #region Member Variables
-        private Vertex midPoint = null;
+        private Vertex centroid = null;
         private float length = -1.0f;
         private Circle circumCircle = null;
         #endregion
@@ -61,46 +61,82 @@ namespace Manina.Math.Mesh
         }
         #endregion
 
-        #region IShape Members
+        #region Operators
         /// <summary>
-        /// Gets the perimeter of the shape.
+        /// Determines if the coordinates of the two segments are equal.
         /// </summary>
-        /// <value></value>
-        public float Perimeter
+        /// <param name="s1">first segment.</param>
+        /// <param name="s2">second segment.</param>
+        public static bool operator ==(Segment s1, Segment s2)
         {
-            get { return Length; }
-        }
+            if (ReferenceEquals(s1, s2)) return true;
+            if ((s1.V1 == s2.V1) && (s1.V2 == s2.V2)) return true;
+            if ((s1.V1 == s2.V2) && (s1.V2 == s2.V1)) return true;
 
-        /// <summary>
-        /// Gets the area of the shape.
-        /// </summary>
-        /// <value></value>
-        public float Area
-        {
-            get { return 0.0f; }
+            return false;
         }
         /// <summary>
-        /// Gets the circum-circle (diametral circle) of the segment.
+        /// Determines if the coordinates of the two segments are not equal.
+        /// </summary>
+        /// <param name="s1">first segment.</param>
+        /// <param name="s2">second segment.</param>
+        public static bool operator !=(Segment s1, Segment s2)
+        {
+            if (ReferenceEquals(s1, s2)) return false;
+            if ((s1.V1 == s2.V1) && (s1.V2 == s2.V2)) return false;
+            if ((s1.V1 == s2.V2) && (s1.V2 == s2.V1)) return false;
+
+            return true;
+        }
+        #endregion
+
+        #region Hash & Equals
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        public override int GetHashCode()
+        {
+            return V1.GetHashCode() ^ V2.GetHashCode();
+        }
+        /// <summary>
+        /// Determines if the given objects are equal.
+        /// </summary>
+        /// <param name="obj">The object to test against.</param>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            Segment s = obj as Segment;
+            if (s == null)
+                return false;
+
+            return (this == s);
+        }
+        #endregion
+
+        #region Shape Members
+        /// <summary>
+        /// Gets the circumcircle (diametral circle) of the segment.
         /// </summary>
         public Circle CircumCircle
         {
             get
             {
                 if (circumCircle == null)
-                    circumCircle = new Circle(MidPoint.X, midPoint.Y, Length / 2.0f);
+                    circumCircle = new Circle(Centroid.X, Centroid.Y, Length / 2.0f);
                 return circumCircle;
             }
         }
         /// <summary>
-        /// Gets the mid point of the segment.
+        /// Gets the geometric center of the segment.
         /// </summary>
-        public Vertex MidPoint
+        public Vertex Centroid
         {
             get
             {
-                if (midPoint == null)
-                    midPoint = (V1 + V2) / 2.0f;
-                return midPoint;
+                if (centroid == null)
+                    centroid = (V1 + V2) / 2.0f;
+                return centroid;
             }
         }
         #endregion
