@@ -56,18 +56,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ShapeCollection.cs" />
-    <Compile Include="MeshGenerator.cs" />
-    <Compile Include="IShape.cs" />
+    <Compile Include="Quad.cs" />
+    <Compile Include="Polyline.cs" />
+    <Compile Include="Mesh.cs" />
     <Compile Include="Vertex.cs" />
     <Compile Include="Segment.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Triangle.cs" />
-    <Compile Include="VertexCollection.cs" />
-    <Compile Include="SegmentCollection.cs" />
-    <Compile Include="TriangleCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

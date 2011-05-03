@@ -1,20 +1,25 @@
 using System;
 
-namespace Manina.Math.Mesh
+namespace Manina.Math
 {
     /// <summary>
     /// Represents a triangle.
     /// </summary>
-    public class Triangle : IShape
+    internal class Triangle
     {
         #region Member Variables
-        private Vertex midPoint = null;
+        private Vertex centroid = null;
         private float perimeter = -1.0f;
         private float area = -1.0f;
         private Circle circumCircle = null;
+        internal int internalID;
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Identifies this object.
+        /// </summary>
+        public int ID { get; set; }
         /// <summary>
         /// Gets the first vertex.
         /// </summary>
@@ -68,14 +73,9 @@ namespace Manina.Math.Mesh
         /// <param name="x3">x coordinate of the third point.</param>
         /// <param name="y3">y coordinate of the third point.</param>
         public Triangle(float x1, float y1, float x2, float y2, float x3, float y3)
+            : this(new Vertex(x1, y1), new Vertex(x2, y2), new Vertex(x3, y3))
         {
-            V1 = new Vertex(x1, y1);
-            V2 = new Vertex(x2, y2);
-            V3 = new Vertex(x3, y3);
-
-            N1 = null;
-            N2 = null;
-            N3 = null;
+            ;
         }
         #endregion
 
@@ -158,17 +158,17 @@ namespace Manina.Math.Mesh
         }
         #endregion
 
-        #region IShape Members
+        #region Shape Members
         /// <summary>
-        /// Gets the geometric mid point of the triangle.
+        /// Gets the geometric center of the triangle.
         /// </summary>
-        public Vertex MidPoint
+        public Vertex Centroid
         {
             get
             {
-                if (midPoint == null)
-                    midPoint = (V1 + V2 + V3) / 3.0f;
-                return midPoint;
+                if (centroid == null)
+                    centroid = (V1 + V2 + V3) / 3.0f;
+                return centroid;
             }
         }
         /// <summary>
@@ -200,7 +200,7 @@ namespace Manina.Math.Mesh
             }
         }
         /// <summary>
-        /// Gets the circum-circle.
+        /// Gets the circumcircle of the triangle.
         /// </summary>
         public Circle CircumCircle
         {

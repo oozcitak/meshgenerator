@@ -1,18 +1,23 @@
 using System;
 
-namespace Manina.Math.Mesh
+namespace Manina.Math
 {
     /// <summary>
     /// Represents a point.
     /// </summary>
-    public class Vertex : IShape
+    internal class Vertex : IComparable<Vertex>
     {
         #region Member Variables
-        private Vertex midPoint = null;
+        private Vertex centroid = null;
         private Circle circumCircle = null;
+        internal int internalID;
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Identifies this object.
+        /// </summary>
+        public int ID { get; set; }
         /// <summary>
         /// Gets the X coordinate.
         /// </summary>
@@ -80,7 +85,7 @@ namespace Manina.Math.Mesh
         /// <param name="v2">second vertex.</param>
         public static bool operator ==(Vertex v1, Vertex v2)
         {
-            return Utility.AlmostEqual(v1.X, v2.X) && Utility.AlmostEqual(v1.Y, v2.Y);
+            return ReferenceEquals(v1, v2) || (Utility.AlmostEqual(v1.X, v2.X) && Utility.AlmostEqual(v1.Y, v2.Y));
         }
         /// <summary>
         /// Determines if the coordinates of the two vertices are not equal.
@@ -89,7 +94,7 @@ namespace Manina.Math.Mesh
         /// <param name="v2">second vertex.</param>
         public static bool operator !=(Vertex v1, Vertex v2)
         {
-            return !Utility.AlmostEqual(v1.X, v2.X) || !Utility.AlmostEqual(v1.Y, v2.Y);
+            return !ReferenceEquals(v1, v2) && (!Utility.AlmostEqual(v1.X, v2.X) || !Utility.AlmostEqual(v1.Y, v2.Y));
         }
         #endregion
 
@@ -136,53 +141,46 @@ namespace Manina.Math.Mesh
             if (v == null)
                 return false;
 
-            return Utility.AlmostEqual(X, v.X) && Utility.AlmostEqual(Y, v.Y);
+            return (this == v);
         }
         #endregion
 
-        #region IShape Members
+        #region IComparable Members
         /// <summary>
-        /// Gets the geometric mid point of the shape.
+        /// Compares the current object with another object of the same type.
         /// </summary>
-        /// <value></value>
-        public Vertex MidPoint
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects 
+        /// being compared. The return value has the following meanings:
+        /// Less than zero if this object is less than the <paramref name="other"/> parameter.
+        /// Zero if this object is equal to <paramref name="other"/>.
+        /// Greater than zero if this object is greater than <paramref name="other"/>.
+        /// </returns>
+        public int CompareTo(Vertex other)
         {
-            get
+            if (Utility.AlmostEqual(X, other.X))
             {
-                if (midPoint == null)
-                    midPoint = new Vertex(X, Y);
-                return midPoint;
-            }
-        }
-        /// <summary>
-        /// Gets the perimeter of the shape.
-        /// </summary>
-        /// <value></value>
-        public float Perimeter
-        {
-            get { return 0.0f; }
-        }
-        /// <summary>
-        /// Gets the area of the shape.
-        /// </summary>
-        /// <value></value>
-        public float Area
-        {
-            get { return 0.0f; }
-        }
-        /// <summary>
-        /// Gets the circumscribed circle of the shape.
-        /// </summary>
-        /// <value></value>
-        public Circle CircumCircle
-        {
-            get
-            {
-                if (circumCircle == null)
+                if (Utility.AlmostEqual(Y, other.Y))
                 {
-                    circumCircle = new Circle(X, Y, 0.0f);
+                    return 0;
                 }
-                return circumCircle;
+                else if (Y < other.Y)
+                {
+                    return -1;
+                }
+                else // if (Y > other.Y)
+                {
+                    return 1;
+                }
+            }
+            else if (X < other.X)
+            {
+                return -1;
+            }
+            else // if (X > other.X)
+            {
+                return 1;
             }
         }
         #endregion

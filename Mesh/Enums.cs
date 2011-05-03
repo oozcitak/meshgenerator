@@ -1,11 +1,11 @@
 using System;
 
-namespace Manina.Math.Mesh
+namespace Manina.Math
 {
 	/// <summary>
 	/// Represents the relation of a point relative to a closed shape.
 	/// </summary>
-	public enum PointShapeRelation
+	internal enum PointShapeRelation
 	{
 		/// <summary>
 		/// The point is inside the shape.

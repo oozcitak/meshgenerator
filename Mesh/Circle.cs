@@ -1,16 +1,16 @@
 using System;
 
-namespace Manina.Math.Mesh
+namespace Manina.Math
 {
     /// <summary>
     /// Represents a circle.
     /// </summary>
-    public class Circle : IShape
+    internal class Circle
     {
         #region Member Variables
         private float area = -1.0f;
         private float perimeter = -1.0f;
-        private Vertex midPoint = null;
+        private Vertex centroid = null;
         private Circle circumCircle = null;
         #endregion
 
@@ -55,44 +55,8 @@ namespace Manina.Math.Mesh
         }
         #endregion
 
-        #region Instance Methods
-        /// <summary>
-        /// Determines if the circle contains the given vertex.
-        /// </summary>
-        /// <param name="v">the vertex to check.</param>
-        public PointShapeRelation Contains(Vertex v)
-        {
-            float x = Vertex.Distance(V, v);
-            if (Utility.AlmostEqual(x, R))
-            {
-                return PointShapeRelation.On;
-            }
-            else if (x < R)
-            {
-                return PointShapeRelation.Inside;
-            }
-            else
-            {
-                return PointShapeRelation.Outside;
-            }
-        }
-        #endregion
-
-        #region IShape Members
-        /// <summary>
-        /// Gets the geometric mid point of the shape.
-        /// </summary>
-        /// <value></value>
-        public Vertex MidPoint
-        {
-            get
-            {
-                if (midPoint == null)
-                    midPoint = new Vertex(V.X, V.Y);
-                return midPoint;
-            }
-        }
-        /// <summary>
+        #region Shape Members
+         /// <summary>
         /// Gets the area of the shape.
         /// </summary>
         public float Area
@@ -117,18 +81,23 @@ namespace Manina.Math.Mesh
             }
         }
         /// <summary>
-        /// Gets the circumscribed circle of the shape.
+        /// Determines if the shape contains the given point.
         /// </summary>
-        /// <value></value>
-        public Circle CircumCircle
+        /// <param name="v">the vertex to check.</param>
+        public PointShapeRelation Contains(Vertex v)
         {
-            get
+            float dist = Vertex.Distance(V, v);
+            if (Utility.AlmostEqual(dist, R))
             {
-                if (circumCircle == null)
-                {
-                    circumCircle = new Circle(V.X, V.Y, R);
-                }
-                return circumCircle;
+                return PointShapeRelation.On;
+            }
+            else if (dist < R)
+            {
+                return PointShapeRelation.Inside;
+            }
+            else
+            {
+                return PointShapeRelation.Outside;
             }
         }
         #endregion
